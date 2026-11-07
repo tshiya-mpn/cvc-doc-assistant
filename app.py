@@ -80,11 +80,11 @@ with col_document:
     )
 
     if document.strip():
-        st.success(f"Document prêt — {len(document)} caractères")
+        st.success(f"Document ajouté — {len(document)} caractères")
     else:
         st.info("Ajoutez un document pour commencer")
 
-    st.caption("L'import PDF sera ajouté à la prochaine étape")
+    st.caption("Ajoutez un PDF")
 
 with col_assistant:
     st.subheader("Assistant IA")
@@ -101,4 +101,51 @@ with col_assistant:
         use_container_width=True,
     )
 
+    if analyser:
+         if not document.strip() or not question.strip():
+             st.warning("Veuillez renseigner un document et une question")
+         else:
+             with st.spinner("Qwen analyse votre document..."):
+                 try:
+                     response = chat(
+                         model="qwen2.5:1.5b",
+                         messages=[
+                             {
+                                 "role": "system",
+                                 "content": (
+                                     "Tu es un assistant documentaire spécialisé "
+                                     "en CVC (chauffage, ventilation, climatisation). "
+                                     "Réponds en français, uniquement à partir "
+                                     "du document fourni. "
+                                     "Si une information est absente, dis-le. "
+                                     "N'invente aucune valeur technique. "
+                                     "Ne prétends jamais valider la conformité "
+                                     "d'un équipement."
+                                 ),
+                             },
+                             {
+                                 "role": "user",
+                                 "content": (
+                                     f"DOCUMENT :\n{document}\n\n"
+                                     f"QUESTION :\n{question}"
+                                 ),
+                             },
+                         ],
+                         options={"temperature": 0},
+                     )
  
+                     st.markdown("#### Résultat de l'analyse")
+                     st.markdown(response.message.content)
+ 
+                 except Exception as erreur:
+                     st.error(
+                         "Impossible de contacter le modèle local. "
+                         "Vérifiez qu'Ollama fonctionne."
+                     )
+                     st.code(str(erreur))
+ 
+    st.divider()
+    st.markdown("**Exemples de questions**")
+    st.caption("• Quel est le débit nominal demandé ?")
+    st.caption("• Quelle puissance thermique est exigée ?")
+    st.caption("• Quelles sont les exigences techniques mentionnées ?")
