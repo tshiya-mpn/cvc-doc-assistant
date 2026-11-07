@@ -1,0 +1,25 @@
+
+# Environnement Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
+
+# Secrets et configuration locale
+.env
+.env.*
+!.env.example
+
+# Documents locaux et confidentiels
+data/*
+!data/.gitkeep
+
+# Index et bases vectorielles locales
+chroma_db/
+*.sqlite3
+
+# Fichiers temporaires
+*.log
