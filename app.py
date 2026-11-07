@@ -71,7 +71,7 @@ col_document, col_assistant = st.columns([1, 1.25], gap="large")
 
 with col_document:
     st.subheader("Document CVC")
-    st.caption("Étape 1 — Ajoutez un extrait de document technique")
+    st.caption("Étape 1 : Ajoutez un extrait de document technique")
 
     document = st.text_area(
         "Contenu du document",
@@ -88,7 +88,7 @@ with col_document:
 
 with col_assistant:
     st.subheader("Assistant IA")
-    st.caption("Étape 2 — Posez une question sur le document")
+    st.caption("Étape 2 : Posez une question sur le document")
 
     question = st.text_input(
         "Votre question",
